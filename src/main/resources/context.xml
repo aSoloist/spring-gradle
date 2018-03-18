@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+
+    <context:annotation-config/>
+
+    <!-- 扫描本项目 -->
+
+    <context:component-scan base-package="com.ly.demo.domain.dao">
+
+        <context:exclude-filter type="annotation"
+
+                                expression="org.springframework.stereotype.Controller"/>
+
+    </context:component-scan>
+
+
+    <context:component-scan base-package="com.ly.demo.domain.service">
+
+        <context:exclude-filter type="annotation"
+
+                                expression="org.springframework.stereotype.Controller"/>
+
+    </context:component-scan>
+
+    <!--扫描aspect-->
+
+    <context:component-scan base-package="com.ly.demo.domain.annotation"/>
+
+    <bean id="propertyConfigurer"
+
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+        <property name="locations">
+
+            <list>
+
+                <value>classpath:resources.properties</value>
+
+            </list>
+
+        </property>
+
+        <property name="fileEncoding" value="utf-8"/>
+
+    </bean>
+
+    <!-- 配置数据源 -->
+    <bean id="dateSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--<bean id="dateSource"-->
+    <!--class="com.alibaba.druid.pool.DruidDataSource">-->
+    <!--<property name="driverClassName" value="${jdbc.driver}"></property>-->
+    <!--<property name="url" value="${jdbc.url}"></property>-->
+    <!--<property name="username" value="${jdbc.username}"></property>-->
+    <!--<property name="password" value="${jdbc.password}"></property>-->
+    <!--<property name="validationQuery" value="select 1"/>-->
+    <!--<property name="initialSize" value="1"/>-->
+    <!--<property name="minIdle" value="1"/>-->
+    <!--<property name="maxActive" value="20"/>-->
+    <!--<property name="maxWait" value="60000"/>-->
+    <!--<property name="timeBetweenEvictionRunsMillis" value="60000"/>-->
+    <!--<property name="minEvictableIdleTimeMillis" value="300000"/>-->
+    <!--<property name="testWhileIdle" value="true"/>-->
+    <!--<property name="testOnBorrow" value="false"/>-->
+    <!--<property name="testOnReturn" value="false"/>-->
+    <!--&lt;!&ndash; mysql 不支持 &ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="poolPreparedStatements" value="true"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>&ndash;&gt;-->
+    <!--<property name="filters" value="stat"/>-->
+    <!--</bean>-->
+
+
+    <!-- 配置 SessionFactory -->
+
+    <bean id="sessionFactory"
+
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+        <property name="dataSource" ref="dateSource"/>
+
+        <property name="packagesToScan">
+
+            <list>
+
+                <value>com.ly.demo.domain.model</value>
+
+            </list>
+
+        </property>
+
+
+        <!-- hibernate 配置 -->
+        <property name="hibernateProperties">
+            <props>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!--<prop key="hibernate.dialect">-->
+                <!--org.hibernate.dialect.PostgreSQLDialect-->
+                <!--</prop>-->
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.max_fetch_depth">2</prop>
+                <prop key="hibernate.default_batch_fetch_size">16</prop>
+                <prop key="hibernate.query.substitutions">true 1, false 0</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+                <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
+                <!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
+                <!--<prop-->
+                <!--key="hibernate.cache.use_query_cache">true-->
+                <!--</prop>-->
+                <!-- <prop key="hibernate.cache.region.factory_class">
+                    org.hibernate.cache.ehcache.EhCacheRegionFactory </prop> <prop key="hibernate.cache.use_structured_entries">true</prop>
+                    <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop> -->
+            </props>
+        </property>
+
+    </bean>
+
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+
+        <property name="dataSource" ref="dateSource"/>
+
+    </bean>
+
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+
+        <property name="sessionFactory" ref="sessionFactory"/>
+
+    </bean>
+
+
+    <!-- 事务 -->
+
+    <bean id="txManager"
+
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+
+        <property name="dataSource" ref="dateSource"/>
+
+        <property name="sessionFactory" ref="sessionFactory"/>
+
+    </bean>
+
+
+    <tx:annotation-driven proxy-target-class="true"
+
+                          transaction-manager="txManager"/>
+
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+
+        <tx:attributes>
+
+            <tx:method name="save*" propagation="REQUIRED"/>
+
+            <tx:method name="add*" propagation="REQUIRED"/>
+
+            <tx:method name="create*" propagation="REQUIRED"/>
+
+            <tx:method name="insert*" propagation="REQUIRED"/>
+
+            <tx:method name="update*" propagation="REQUIRED"/>
+
+            <tx:method name="merge*" propagation="REQUIRED"/>
+
+            <tx:method name="del*" propagation="REQUIRED"/>
+
+            <tx:method name="refund*" propagation="REQUIRED"/>
+
+            <tx:method name="recharge*" propagation="REQUIRED"/>
+
+            <tx:method name="remove*" propagation="REQUIRED"/>
+
+            <tx:method name="put*" propagation="REQUIRED"/>
+
+            <tx:method name="gen*" propagation="REQUIRED"/>
+
+            <tx:method name="use*" propagation="REQUIRED"/>
+
+            <tx:method name="pay*" propagation="REQUIRED"/>
+
+            <tx:method name="bind*" propagation="REQUIRED"/>
+
+            <tx:method name="unBind*" propagation="REQUIRED"/>
+
+            <tx:method name="parse*" propagation="REQUIRED"/>
+
+            <tx:method name="fault*" propagation="REQUIRED"/>
+
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+
+            <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
+
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+
+            <tx:method name="list*" propagation="REQUIRED" read-only="true"/>
+
+            <tx:method name="*" read-only="true"/>
+
+        </tx:attributes>
+
+    </tx:advice>
+
+
+    <aop:config>
+
+        <!-- 只对业务逻辑层实施事务 -->
+
+        <aop:pointcut id="txPointcut" expression="execution(* *..service..*(..))"/>
+
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+
+    </aop:config>
+
+
+</beans>
+
