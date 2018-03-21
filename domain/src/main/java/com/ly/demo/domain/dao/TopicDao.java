@@ -12,16 +12,36 @@ import java.util.Map;
  */
 @Repository
 public class TopicDao extends BaseDao<Topic, String> {
-    public Topic getRandom() {
-        String hql = "from Topic where ver < 3";
+    private String hql = "from Topic where ver < 3";
+
+    /**
+     * 随机获取题目(简单)
+     * @return
+     */
+    public Topic getRandomSimple(Topic.Difficulty difficulty) {
+        Map<String, Object> map = new HashMap<>();
+        hql = hql + " and difficulty = :difficulty";
+        map.put("difficulty", difficulty);
         long result = getCount(hql, null);
-        logger.info("查询到共有" + result + "条数据");
         int index = (int) (Math.random() * result) + 1;
         hql = hql + " and topicNumber = :number";
-        Map<String, Object> map = new HashMap<>();
         map.put("number", index + "");
-        logger.info("下标" + index);
         List<Topic> topics = findByNameParam(hql, map);
-        return topics.get(0);
+        if (topics.size() == 1) {
+            Topic topic = topics.get(0);
+            topic.setVer(topic.getVer() + 1);
+            update(topic);
+            return topic;
+        } else {
+            return null;
+        }
+    }
+    
+    public Topic getRandomMedium(Topic.Difficulty difficulty) {
+        return null;    
+    }
+
+    public Topic getRandomDifficult(Topic.Difficulty difficulty) {
+        return null;
     }
 }

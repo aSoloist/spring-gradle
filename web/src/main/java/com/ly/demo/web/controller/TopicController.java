@@ -15,8 +15,19 @@ public class TopicController {
     private TopicService topicService;
     
     @RequestMapping(value = "/getTopic", method = RequestMethod.GET)
-    public Topic getTopic() {
-        return topicService.getTopic();
+    public Topic getTopic(@RequestParam(required = true) String difficulty) {
+        Topic.Difficulty difficulty1 = null;
+        if (difficulty != null) {
+            difficulty1 = Topic.Difficulty.valueOf(difficulty);
+        }
+        Topic topic = topicService.getTopic(difficulty1);
+        if (topic != null) {
+            return topic;
+        } else {
+            topic = new Topic();
+            topic.setTitle("未查到符合的题目");
+            return topic;
+        }
     }
     
     @RequestMapping(value = "/save", method = RequestMethod.POST)

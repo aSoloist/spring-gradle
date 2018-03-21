@@ -1,8 +1,6 @@
 package com.ly.demo.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Soloist on 2018/3/21 1:12
@@ -10,6 +8,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "topics")
 public class Topic extends AbstractVersionModel {
+    
+    public enum Difficulty {
+        SIMPLE, MEDIUM, DIFFICULT
+    }
     
     @Column(name = "topic_number", nullable = false, unique = true)
     private String topicNumber;
@@ -31,6 +33,18 @@ public class Topic extends AbstractVersionModel {
 
     @Column(name = "answer", nullable = false)
     private String answer;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "difficulty", nullable = false)
+    private Difficulty difficulty; // SIMPLE:简单 MEDIUM:中等 DIFFICULT:困难
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 
     public String getTopicNumber() {
         return topicNumber;
