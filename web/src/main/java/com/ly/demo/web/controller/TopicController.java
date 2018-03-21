@@ -30,6 +30,7 @@ public class TopicController {
         }
         Topic topic = topicService.updateTopic(difficulty1);
         if (topic != null) {
+            topic.setAnswer(null);
             return topic;
         } else {
             topic = new Topic();

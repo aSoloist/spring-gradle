@@ -23,9 +23,7 @@ public class TopicService {
         if (difficulty == null || StringUtils.isEmptyOrWhitespaceOnly(difficulty.toString())) {
             return null;
         }
-        Topic topic = topicDao.getRandom(difficulty);
-        topic.setAnswer(null);
-        return topic;
+        return topicDao.getRandom(difficulty);
     }
 
     /**
