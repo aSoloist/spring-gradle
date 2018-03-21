@@ -24,8 +24,9 @@ public class TopicController {
         Topic.Difficulty difficulty1 = null;
         if (difficulty != null) {
             difficulty1 = Topic.Difficulty.valueOf(difficulty);
+            System.out.println(difficulty1);
         }
-        Topic topic = topicService.getTopic(difficulty1);
+        Topic topic = topicService.updateTopic(difficulty1);
         if (topic != null) {
             return topic;
         } else {

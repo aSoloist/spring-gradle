@@ -12,21 +12,20 @@ import java.util.Map;
  */
 @Repository
 public class TopicDao extends BaseDao<Topic, String> {
-    private String hql = "from Topic where ver < 3";
-
+    
+    private String getHql() {
+        return "FROM Topic WHERE ver < 3";
+    }
+    
     /**
      * 随机获取题目(简单)
      * @return
      */
     public Topic getRandomSimple(Topic.Difficulty difficulty) {
         Map<String, Object> map = new HashMap<>();
-        hql = hql + " and difficulty = :difficulty";
+        String hql = getHql() + " AND difficulty = :difficulty ORDER BY RAND()";
         map.put("difficulty", difficulty);
-        long result = getCount(hql, null);
-        int index = (int) (Math.random() * result) + 1;
-        hql = hql + " and topicNumber = :number";
-        map.put("number", index + "");
-        List<Topic> topics = findByNameParam(hql, map);
+        List<Topic> topics = findByNameParam(hql, -1, 1, map);
         if (topics.size() == 1) {
             Topic topic = topics.get(0);
             topic.setVer(topic.getVer() + 1);
