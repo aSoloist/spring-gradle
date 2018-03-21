@@ -13,7 +13,12 @@ import org.springframework.stereotype.Service;
 public class TopicService {
     @Autowired
     private TopicDao topicDao;
-    
+
+    /**
+     * 根据难度获取题目
+     * @param difficulty 难度
+     * @return 题目
+     */
     public Topic getTopic(Topic.Difficulty difficulty) {
         if (difficulty == null || StringUtils.isEmptyOrWhitespaceOnly(difficulty.toString())) {
             return null;
