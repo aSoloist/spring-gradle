@@ -13,17 +13,13 @@ import java.util.Map;
 @Repository
 public class TopicDao extends BaseDao<Topic, String> {
     
-    private String getHql() {
-        return "FROM Topic WHERE ver < 3";
-    }
-    
     /**
      * 随机获取题目(简单)
-     * @return
+     * @return 题目
      */
-    public Topic getRandomSimple(Topic.Difficulty difficulty) {
+    public Topic getRandom(Topic.Difficulty difficulty) {
         Map<String, Object> map = new HashMap<>();
-        String hql = getHql() + " AND difficulty = :difficulty ORDER BY RAND()";
+        String hql = "FROM Topic WHERE ver < 3 AND difficulty = :difficulty ORDER BY RAND()";
         map.put("difficulty", difficulty);
         List<Topic> topics = findByNameParam(hql, -1, 1, map);
         if (topics.size() == 1) {
@@ -35,12 +31,21 @@ public class TopicDao extends BaseDao<Topic, String> {
             return null;
         }
     }
-    
-    public Topic getRandomMedium(Topic.Difficulty difficulty) {
-        return null;    
-    }
 
-    public Topic getRandomDifficult(Topic.Difficulty difficulty) {
-        return null;
+    /**
+     * 根据题号获取题目
+     * @param number 题号
+     * @return 题目
+     */
+    public Topic getTopicByNumber(String number) {
+        String hql = "FROM Topic WHERE topicNumber = :number";
+        Map<String, Object> map = new HashMap<>();
+        map.put("number", number);
+        List<Topic> topics = findByNameParam(hql, map);
+        if (topics.size() == 1) {
+            return topics.get(0);
+        } else {
+            return null;
+        }
     }
 }

@@ -19,16 +19,16 @@ public class Topic extends AbstractVersionModel {
     @Column(name = "title", nullable = false)
     private String title;
     
-    @Column(name = "option_a", nullable = false)
+    @Column(name = "option_a", nullable = true)
     private String optionA;
 
-    @Column(name = "option_b", nullable = false)
+    @Column(name = "option_b", nullable = true)
     private String optionB;
 
-    @Column(name = "option_c", nullable = false)
+    @Column(name = "option_c", nullable = true)
     private String optionC;
 
-    @Column(name = "option_d", nullable = false)
+    @Column(name = "option_d", nullable = true)
     private String optionD;
 
     @Column(name = "answer", nullable = false)

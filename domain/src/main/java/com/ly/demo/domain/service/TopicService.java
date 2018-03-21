@@ -23,20 +23,20 @@ public class TopicService {
         if (difficulty == null || StringUtils.isEmptyOrWhitespaceOnly(difficulty.toString())) {
             return null;
         }
-        
-        Topic topic = null;
-        switch (difficulty) {
-            case SIMPLE:
-                topic = topicDao.getRandomSimple(difficulty);
-                break;
-            case MEDIUM:
-                topic = topicDao.getRandomMedium(difficulty);
-                break;
-            case DIFFICULT:
-                topic = topicDao.getRandomDifficult(difficulty);
-                break;
-        }
+        Topic topic = topicDao.getRandom(difficulty);
+        topic.setAnswer(null);
         return topic;
+    }
+
+    /**
+     * 根据题号获取题目，并判断对错
+     * @param number 题号
+     * @param answer 答案
+     * @return 对错
+     */
+    public boolean isRight(String number, String answer) {
+        Topic topic = topicDao.getTopicByNumber(number);
+        return topic.getAnswer().contains(answer);
     }
     
     public Topic saveOrUpdate(Topic topic) {

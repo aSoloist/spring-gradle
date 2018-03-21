@@ -1,5 +1,6 @@
 package com.ly.demo.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ly.demo.domain.model.Topic;
 import com.ly.demo.domain.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class TopicController {
 
     /**
      * 根据难度获取题目
+     *
      * @param difficulty 枚举 SIMPLE, MEDIUM, DIFFICULT
      * @return 题目
      */
@@ -35,7 +37,32 @@ public class TopicController {
             return topic;
         }
     }
-    
+
+    /**
+     * 返回答题结果
+     * @param topicNumber 题号
+     * @param answer 答案
+     * @return 结果
+     */
+    @RequestMapping(value = "/getAnswer", method = RequestMethod.POST)
+    public JSONObject getAnswer(@RequestParam String topicNumber,
+                                @RequestParam String answer) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", "success");
+        if (topicService.isRight(topicNumber, answer)) {
+            jsonObject.put("result", "right");
+        } else {
+            jsonObject.put("result", "error");
+        }
+
+        return jsonObject;
+    }
+
+    /**
+     * 保存题目
+     * @param topic 题目
+     * @return
+     */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Topic saveTopic(@RequestBody Topic topic) {
         return topicService.saveOrUpdate(topic);
