@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/topic")
-public class TopicController {
+public class TopicController extends BaseController {
     @Autowired
     private TopicService topicService;
 
@@ -38,6 +38,11 @@ public class TopicController {
             return topic;
         }
     }
+    
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public void addUser(@RequestParam String userAgent) {
+        logger.info("用户：" + userAgent);
+    }
 
     /**
      * 返回答题结果
@@ -50,6 +55,7 @@ public class TopicController {
                                 @RequestParam String answer) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "success");
+        logger.info(topicNumber + ":" + answer);
         if (topicService.isRight(topicNumber, answer)) {
             jsonObject.put("result", "right");
         } else {

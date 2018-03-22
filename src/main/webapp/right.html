@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="email=no"/>
+<title></title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="whole">
+
+   <!--头部信息-->
+    <div class="head">
+        <div class="t_pic">
+            <img src="img/head.jpg"  alt=""/>
+        </div>
+        <div class="t_tit">
+            <p>第三届寻宝大会</p>
+        </div>
+    </div>
+    
+    <!--内容信息-->
+    <div class="content">
+    	<div class="finish_ion">
+            <div class="wz">
+            	<p>恭喜！回答正确。</p>
+            </div>
+        </div>
+    </div>
+    <div class="ts_mask">
+    	<div class="share">
+           <img src="img/share_t.png"  alt=""/>
+        </div>
+    </div>
+</div>
+<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#btn_a").click(function(){
+		$(".ts_mask").fadeIn(1500);
+		});
+	$(".ts_mask").click(function(){
+		$(this).fadeOut(1500);
+		});
+});
+</script>
+
+</body>
+</html>
