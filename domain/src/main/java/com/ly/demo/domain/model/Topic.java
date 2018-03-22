@@ -16,7 +16,7 @@ public class Topic extends AbstractVersionModel {
     @Column(name = "topic_number", nullable = false, unique = true)
     private String topicNumber;
     
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 1000)
     private String title;
     
     @Column(name = "option_a", nullable = true)

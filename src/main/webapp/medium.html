@@ -37,7 +37,7 @@
         </div>
         <div class="con_con">
             <label for="text"></label>
-            <input id="text" type="text" name="answer"/>
+            <textarea id="text" name="answer" cols="1" rows="3"></textarea>
             <input type="hidden" class="number" value=""/>
             <ul>
                 <li>
@@ -105,12 +105,13 @@
                     $('.topic').text('填空题');
                     $('.title').text(data['title']);
                     $('.number').val(data['topicNumber']);
-                    $('.con_con ul').css('visibility', 'hidden');
+                    $('.con_con ul').hide();
+                    $('#text').show();
                     $('#text').css('visibility', 'visible');
                 } else {
                     $('.topic').text('错误');
                     $('.title').text(data['title']);
-                    $('.con_con ul').css('visibility', 'hidden');
+                    $('.con_con ul').hide();
                 }
             }
         })

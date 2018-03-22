@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <title></title>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<div class="whole">
+
+    <!--头部信息-->
+    <div class="head">
+        <div class="t_pic">
+            <img src="img/head.jpg"/>
+        </div>
+        <div class="t_tit">
+            <p>第三届寻宝大会</p>
+        </div>
+    </div>
+
+    <!--选择单选题目-->
+    <div class="t_con">
+        <div class="con_tit">
+            <p class="topic">测试</p>
+            <p class="title">测试</p>
+        </div>
+        <div class="con_con">
+            <label for="text"></label>
+            <input id="text" type="text" name="answer"/>
+            <input type="hidden" class="number" value=""/>
+            <ul>
+                <li>
+                    <div class="checkboxFour">
+                        <input type="checkbox" value="A" id="A" name="chkItem"/>
+                        <label for="A"></label>
+                    </div>
+                    <p class="optionA">A</p>
+                </li>
+                <li>
+                    <div class="checkboxFour">
+                        <input type="checkbox" value="B" id="B" name="chkItem"/>
+                        <label for="B"></label>
+                    </div>
+                    <p class="optionB">B</p>
+                </li>
+                <li>
+                    <div class="checkboxFour">
+                        <input type="checkbox" value="C" id="C" name="chkItem"/>
+                        <label for="C"></label>
+                    </div>
+                    <p class="optionC">C</p>
+                </li>
+                <li>
+                    <div class="checkboxFour">
+                        <input type="checkbox" value="D" id="D" name="chkItem"/>
+                        <label for="D"></label>
+                    </div>
+                    <p class="optionD">D</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--上提下题按钮-->
+    <div class="t_btn">
+        <button id="next" type="button">提交</button>
+    </div>
+    <!--提示遮罩层-->
+    <div class="ts_mask">
+        <div class="tishi">
+            <div class="qd"></div>
+        </div>
+    </div>
+</div>
+<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            async: false,
+            type: 'GET',
+            url: '/topic/getTopic.do?difficulty=SIMPLE',
+            dataType: 'json',
+            success: function (data) {
+                if (typeof data['optionA'] !== "undefined") {
+                    $('.number').val(data['topicNumber']);
+                    $('.topic').text('选择题');
+                    $('.title').text(data['title']);
+                    $('.optionA').text(data['optionA']);
+                    $('.optionB').text(data['optionB']);
+                    $('.optionC').text(data['optionC']);
+                    $('.optionD').text(data['optionD']);
+                } else if (typeof data['topicNumber'] !== 'undefined') {
+                    $('.topic').text('填空题');
+                    $('.title').text(data['title']);
+                    $('.number').val(data['topicNumber']);
+                    $('.con_con ul').hide();
+                    $('#text').show();
+                    $('#text').css('visibility', 'visible');
+                } else {
+                    $('.topic').text('错误');
+                    $('.title').text(data['title']);
+                    $('.con_con ul').hide();
+                }
+            }
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    //选择题选项动画
+    aa(0);
+
+    function aa(i) {
+        //alert(i);
+
+        $('.con_con ul').children('li').eq(i).animate({
+            top: 0 + 'vw',
+        }, 800);
+        i++;
+        var set = setTimeout("aa(" + i + ")", 500);
+
+        var tim = $(".con_con ul").children("li").length;
+        if (i >= tim) {
+            clearTimeout(set);
+        }
+    }
+
+    //选择题标题动画
+    $(".con_tit").animate({
+        left: 80 + 'vw',
+    }, 1500);
+
+    //点击下一题没选择时执行的动作
+    $(".qd").click(function () {
+        $(".ts_mask").fadeOut(1000);
+    });
+</script>
+
+
+<script type="text/javascript">
+    // 提交按钮事件绑定
+    $("#next").click(function () {
+        var number = $('.number').val();
+        var text = $('#text').val();
+        if (text.length === 0) {
+            var checkbox = $("input[type=checkbox]:checked");
+            if (checkbox.length === 0) {
+                $(".ts_mask").fadeIn(1000);
+            } else {
+                var answer = checkbox.val();
+                $.ajax({
+                    type: 'POST',
+                    async: false,
+                    url: '/topic/getAnswer.do',
+                    dataType: 'json',
+                    data: {
+                        topicNumber: number,
+                        answer: answer
+                    },
+                    success: function (data) {
+                        if (data['result'] === 'right') {
+                            $(location).attr('href', 'right.html');
+                        } else if (data['result'] === 'error') {
+                            $(location).attr('href', 'error.html');
+                        }
+                    }
+                })
+            }
+        } else {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: '/topic/getAnswer.do',
+                dataType: 'json',
+                data: {
+                    topicNumber: number,
+                    answer: text
+                },
+                success: function (data) {
+                    if (data['result'] === 'right') {
+                        $(location).attr('href', 'right.html');
+                    } else if (data['result'] === 'error') {
+                        $(location).attr('href', 'error.html');
+                    }
+                }
+            })
+        }
+    });
+
+    $(function () {
+        $(':checkbox[name=chkItem]').each(function () {
+            //让checkbox多选框变成单选
+            $(this).click(function () {
+                if ($(this).attr('checked')) {
+                    $(':checkbox[name=chkItem]').removeAttr('checked');
+                    $(this).attr('checked', 'checked');
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

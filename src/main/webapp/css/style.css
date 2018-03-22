@@ -255,19 +255,18 @@ button, input, select, textarea {
 
 .con_tit {
     width: 80%;
-    height: 15vw;
     color: #fff;
     position: relative;
     margin: 0 10% 0 -70vw;
 }
 
 .con_tit p:nth-of-type(1) {
-    font-size: 4vw;
+    font-size: 3vw;
     line-height: 5vw;
 }
 
 .con_tit p:nth-of-type(2) {
-    font-size: 6vw;
+    font-size: 4vw;
     line-height: 10vw;
 }
 
@@ -275,51 +274,49 @@ button, input, select, textarea {
     width: 100%;
     height: auto;
     margin: 0 auto;
-    float: left;
     position: relative;
 }
 
 .con_con ul {
     width: 80%;
     height: auto;
-    margin: 6vw 10% 0 10%;
+    margin: 5% 10% 0 10%;
     overflow: hidden;
     position: relative;
 }
 
 .con_con ul li {
     width: 100%;
-    height: 13vw;
-    float: left;
     top: 80vw;
     position: relative;
     color: #fff;
     font-size: 5vw;
-    line-height: 15vw;
+    line-height: 10vw;
     z-index: 9;
 }
 
 .con_con ul li p {
     margin-left: 9vw;
+    font-size: 4vw;
 }
 
 .t_btn {
+    position:absolute;
     width: 90%;
-    height: 12vw;
-    float: left;
-    margin: 10vw 5% 10vw 5%;
+    height: 10vw;
+    margin: 5% 5% 10vw 5%;
 }
 
 .t_btn button {
     width: 45%;
     height: 12vw;
-    margin-left: 22.5%;
-    float: left;
     font-size: 4vw;
     text-align: center;
     line-height: 12vw;
     border-radius: 10px;
     visibility: visible;
+    position:absolute;
+    right: 27%;
 }
 
 .t_btn button:nth-of-type(1) {
@@ -334,11 +331,14 @@ button, input, select, textarea {
 }
 
 /*选择按钮*/
-input[type=text] {
-    margin: 10% 0 0 12.5%;
+textarea {
+    position: relative;
+    display: none;
+    bottom: 0;
+    margin: 5% 0 0 12.5%;
     width: 75%;
-    height: 35px;
-    font-size: 25px;
+    height: 30px;
+    font-size: 17px;
     background: #ebebeb;
     -webkit-appearance: none;
 }
@@ -352,7 +352,7 @@ input[type=text] {
     background-color: #fff;
     border-radius: 100%;
     position: relative;
-    top: 5px;
+    top: -5px;
 }
 
 /**
@@ -368,7 +368,6 @@ input[type=text] {
     -ms-transition: all .2s ease;
     transition: all .2s ease;
     cursor: pointer;
-    top: 3vw;
     position: absolute;
     z-index: 1;
     background: url(../img/wxz.png) no-repeat;
