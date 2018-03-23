@@ -45,23 +45,16 @@ public class TopicController extends BaseController {
     }
 
     /**
-     * 返回答题结果
+     * 返回答案
      * @param topicNumber 题号
-     * @param answer 答案
-     * @return 结果
+     * @return 答案
      */
     @RequestMapping(value = "/getAnswer", method = RequestMethod.POST)
-    public JSONObject getAnswer(@RequestParam String topicNumber,
-                                @RequestParam String answer) {
+    public JSONObject getAnswer(@RequestParam String topicNumber) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "success");
-        logger.info(topicNumber + ":" + answer);
-        if (topicService.isRight(topicNumber, answer)) {
-            jsonObject.put("result", "right");
-        } else {
-            jsonObject.put("result", "error");
-        }
-
+        String answer = topicService.getAnswer(topicNumber);
+        jsonObject.put("answer", answer);
         return jsonObject;
     }
 

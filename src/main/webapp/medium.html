@@ -158,48 +158,19 @@
     $("#next").click(function () {
         var number = $('.number').val();
         var text = $('#text').val();
+        var url;
         if (text.length === 0) {
             var checkbox = $("input[type=checkbox]:checked");
             if (checkbox.length === 0) {
                 $(".ts_mask").fadeIn(1000);
             } else {
                 var answer = checkbox.val();
-                $.ajax({
-                    type: 'POST',
-                    async: false,
-                    url: '/topic/getAnswer.do',
-                    dataType: 'json',
-                    data: {
-                        topicNumber: number,
-                        answer: answer
-                    },
-                    success: function (data) {
-                        if (data['result'] === 'right') {
-                            $(location).attr('href', 'right.html');
-                        } else if (data['result'] === 'error') {
-                            $(location).attr('href', 'error.html');
-                        }
-                    }
-                })
+                url = 'right.html?number=' + number + '%26answer=' + answer;
+                location.href = url;
             }
         } else {
-            $.ajax({
-                type: 'POST',
-                async: false,
-                url: '/topic/getAnswer.do',
-                dataType: 'json',
-                data: {
-                    topicNumber: number,
-                    answer: text
-                },
-                success: function (data) {
-                    if (data['result'] === 'right') {
-                        $(location).attr('href', 'right.html');
-                    } else if (data['result'] === 'error') {
-                        $(location).attr('href', 'error.html');
-                    }
-                }
-            })
+            url = 'right.html?number=' + number + '%26answer=' + text;
+            location.href = url;
         }
     });
 

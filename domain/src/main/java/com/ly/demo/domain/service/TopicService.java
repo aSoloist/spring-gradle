@@ -32,9 +32,9 @@ public class TopicService {
      * @param answer 答案
      * @return 对错
      */
-    public boolean isRight(String number, String answer) {
+    public String getAnswer(String number) {
         Topic topic = topicDao.getTopicByNumber(number);
-        return topic.getAnswer().contains(answer);
+        return topic.getAnswer();
     }
     
     public Topic saveOrUpdate(Topic topic) {

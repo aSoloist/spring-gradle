@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="format-detection" content="email=no"/>
-    <title>正确</title>
+    <title>答案</title>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 
@@ -33,7 +33,10 @@
     <div class="content">
         <div class="finish_ion">
             <div class="wz">
-                <p>恭喜！回答正确。</p>
+                正确答案：
+                <p class="result"></p>
+                你的答案：
+                <p class="user_result"></p>
             </div>
         </div>
     </div>
@@ -46,13 +49,31 @@
 <script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#btn_a").click(function () {
-            $(".ts_mask").fadeIn(1500);
-        });
-        $(".ts_mask").click(function () {
-            $(this).fadeOut(1500);
-        });
-    });
+        var url = location.search;
+        var topicNumber, answer;
+        if (url.indexOf("?") !== -1) {
+            url = url.substr(1);
+            topicNumber = url.split("%26")[0];
+            answer = url.split("%26")[1]
+        }
+        if (topicNumber !== undefined && answer !== undefined) {
+            topicNumber = topicNumber.split("=")[1];
+            answer = answer.split("=")[1];
+            $.ajax({
+                type: 'POST',
+                async: 'false',
+                url: '/topic/getAnswer.do',
+                dataType: 'JSON',
+                data: {
+                    topicNumber: topicNumber
+                },
+                success: function (data) {
+                    $('.result').text(data['answer']);
+                }
+            });
+            $('.user_result').text(decodeURI(answer));
+        }
+    })
 </script>
 
 </body>
