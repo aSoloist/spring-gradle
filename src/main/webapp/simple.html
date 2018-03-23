@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="format-detection" content="email=no"/>
-    <title></title>
+    <title>简单</title>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 
@@ -37,7 +37,7 @@
         </div>
         <div class="con_con">
             <label for="text"></label>
-            <input id="text" type="text" name="answer"/>
+            <textarea id="text" name="answer" cols="1" rows="3"></textarea>
             <input type="hidden" class="number" value=""/>
             <ul>
                 <li>
@@ -97,6 +97,10 @@
                     $('.number').val(data['topicNumber']);
                     $('.topic').text('选择题');
                     $('.title').text(data['title']);
+                    $('#A').val(data['optionA']);
+                    $('#B').val(data['optionB']);
+                    $('#C').val(data['optionC']);
+                    $('#D').val(data['optionD']);
                     $('.optionA').text(data['optionA']);
                     $('.optionB').text(data['optionB']);
                     $('.optionC').text(data['optionC']);

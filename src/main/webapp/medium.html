@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="format-detection" content="email=no"/>
-    <title></title>
+    <title>中等</title>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 
@@ -97,6 +97,10 @@
                     $('.number').val(data['topicNumber']);
                     $('.topic').text('选择题');
                     $('.title').text(data['title']);
+                    $('#A').val(data['optionA']);
+                    $('#B').val(data['optionB']);
+                    $('#C').val(data['optionC']);
+                    $('#D').val(data['optionD']);
                     $('.optionA').text(data['optionA']);
                     $('.optionB').text(data['optionB']);
                     $('.optionC').text(data['optionC']);
